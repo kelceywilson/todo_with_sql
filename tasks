@@ -1,0 +1,68 @@
+#!/usr/local/bin/node
+// ^^ The tasks command file should have a shebang pointing to node
+// shebang tells you what interpreter to use to run the file
+// could also be #!/usr/bin/env node
+const fs = require('fs');
+
+// The four command line commands
+const add = require('./commands/add');
+const comp = require('./commands/complete');
+const del = require('./commands/delete');
+const list = require('./commands/list');
+
+const taskFile = process.env.NODE_ENV || './taskList.json';
+// assign task instructions to command and task
+const command = process.argv[2];
+const task = process.argv.slice(3).join(' ');
+// log error if missing command
+if (!command) {
+  console.log('  Missing command - options are "add", "delete", "complete", and "list"');
+  process.exit(1);
+}
+
+// check for existence of task
+function taskExists() {
+  if (!task) {
+    console.log('  Missing task or task number');
+    console.log('  - "add" should be followed by a task description');
+    console.log('  - "delete" and "complete" should be followed by a task number');
+    process.exit(1);
+  }
+}
+
+function todoThing() {
+  switch (command) {
+    case 'list':
+      list(console.log);
+      break;
+    case 'add':
+      taskExists();
+      add(task);
+      break;
+    case 'delete':
+      taskExists();
+      del(task, 'Deleted');
+      break;
+    case 'complete':
+      taskExists();
+      comp(task, 'Completed');
+      break;
+    default:
+      console.log('  Invalid command- options are "add", "delete", "complete", and "list"');
+  }
+}
+
+fs.readFile('./taskList.json', (err) => {
+  if (err) {
+    if (err.code === 'ENOENT') {
+      fs.writeFile(taskFile, '{"nextId": 1, "tasks": [ ], "Deleted": [ ], "Completed": [ ]}', (err2) => {
+        if (err2) throw err2;
+        todoThing();
+      });
+    } else {
+      throw err;
+    }
+  } else {
+    todoThing();
+  }
+});
