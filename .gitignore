@@ -1,2 +1,4 @@
 node_modules
-*.json
+taskList.json
+scratch
+eslinrc.json

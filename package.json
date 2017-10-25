@@ -1,0 +1,38 @@
+{
+  "name": "sqlTodo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "db:create": "createdb todoSql && psql todoSql < database/schema.sql",
+    "db:reset": "dropdb todoSql && npm run db:create",
+    "test": "export NODE_ENV='test' && mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelceywilson/todo_with_sql.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kelceywilson/todo_with_sql/issues"
+  },
+  "homepage": "https://github.com/kelceywilson/todo_with_sql#readme",
+  "devDependencies": {
+    "arrow-mocha": "^1.0.1",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "dependencies": {
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1",
+    "pg": "^7.3.0",
+    "pg-format": "^1.0.4",
+    "pg-promise": "^7.0.3"
+  }
+}
